@@ -8,9 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var data: [SampleModel] = [
+        SampleModel(text: "abc"),
+        SampleModel(text: "def"),
+        SampleModel(text: "")
+    ]
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        List {
+            ForEach.init(self.data.indices) { index in
+                SampleRow.init(model: self.$data[index]) {
+                    debugPrint("onCommit")
+                    debugPrint(self.data)
+                }
+            }
+        }
     }
 }
 
