@@ -16,14 +16,24 @@ struct ContentView: View {
     ]
     
     var body: some View {
-        List {
-            ForEach.init(self.data.indices) { index in
-                SampleRow.init(model: self.$data[index]) {
-                    debugPrint("onCommit")
-                    debugPrint(self.data)
-                }
-            }
+        
+        NavigationView {
+            List {
+                ForEach.init(self.data.indices) { index in
+                    SampleRow.init(model: self.$data[index]) {
+                        debugPrint("onCommit")
+                        debugPrint(self.data)
+                    }
+                }.onDelete(perform: { indexSet in
+                    self.data.remove(atOffsets: indexSet)
+                }).onMove(perform: { indices, newOffset in
+                    self.data.move(fromOffsets: indices, toOffset: newOffset)
+                })
+            }.navigationBarTitle(Text("editable list"), displayMode: .inline)
+            .navigationBarItems(trailing: EditButton())
         }
+        
+        
     }
 }
 
